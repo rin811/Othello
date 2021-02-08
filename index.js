@@ -1,5 +1,8 @@
 window.addEventListener("resize", updateCanvas);
+window.addEventListener("onTouch", onClick);
 window.addEventListener("click", onClick);
+
+//window.addEventListener
 
 var board;
 var boardAnim;
@@ -12,7 +15,7 @@ var boardStroke=4;
 var lineStroke=2;
 
 var animDuration=100;
-var animSpeed=1;
+var animSpeed=5;
 
 window.onload=function(){
     setCanvasSize();
@@ -30,10 +33,6 @@ function updateCanvas(){
     setCanvasSize();
     draw();
 }
-
-// function update(){
-//     draw();
-// }
 
 function init(){
     // board=[
@@ -63,14 +62,14 @@ function init(){
     for(var y=0;y<8;y++){boardAnim[y]=(new Array(8)).fill(animDuration);}
 
     //初期状態の４つの石を設置
-    turnDisks(3,3,1);
-    turnDisks(4,4,1);
-    turnDisks(3,4,0);
-    turnDisks(4,3,0);
+    turnDisks(3,3,1,0);
+    turnDisks(4,4,1,-50);
+    turnDisks(3,4,0,-30);
+    turnDisks(4,3,0,-30);
     
     turn=0;
 
-    requestAnimationFrame(draw);
+    requestAnimationFrame(update);
 }
 
 function onClick(e){
@@ -148,12 +147,17 @@ function checkCanPut(X,Y){
 
 }
 
-function turnDisks(x,y,turn){
+function turnDisks(x,y,turn,TimeOffset){
     board[y][x]=turn;
-    boardAnim[y][x]=0;
+
+    if(TimeOffset==null)boardAnim[y][x]=0;
+        else boardAnim[y][x]=TimeOffset;
 }
 
-
+function update(){
+    draw();
+    requestAnimationFrame(update);
+}
 
 function draw(){
     
@@ -224,25 +228,38 @@ function draw(){
                     else ctx.fillStyle="black";
 
                     ctx.beginPath();
-                    ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.2*EaseOutExpo(boardAnim[i][j]),0,2*Math.PI,true);
+                    ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.2*Math.max(EaseOutExpo(boardAnim[i][j]),0),0,2*Math.PI,true);
                     ctx.fill();
     
                     if(board[i][j]==0) ctx.fillStyle="black";
                     else ctx.fillStyle="white";
                     ctx.beginPath();
-                    ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.22*EaseOutExpo(boardAnim[i][j]),0,2*Math.PI,true);
+                    ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.22*Math.max(EaseOutExpo(boardAnim[i][j]),0),0,2*Math.PI,true);
                     ctx.fill();
                 }
             }
         }
 
         //スコア表描画
-        //黒
-        ctx.fillStyle="#433d3c";
-        ctx.fillRect(marginSize*2+boardSize,marginSize,canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize);
-        ctx.fillRect(marginSize*2+boardSize,marginSize+(canvas.clientHeight*0.5),canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize*2);
+        if(canvas.clientHeight>=canvas.clientWidth)
+        {
+            //画面アスペクト比縦長用
+        }
+        else
+        {
+            //画面アスペクト比横長用
+            ctx.fillStyle="#433d3c";
+            ctx.fillRect(marginSize*2+boardSize,marginSize,canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize);
+            ctx.fillRect(marginSize*2+boardSize,marginSize+(canvas.clientHeight*0.5),canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize*2);
+        }
+
+        
+
+        
+        
+
     // }
-    requestAnimationFrame(draw);
+    
 }
 
 function EaseOutExpo(t)
