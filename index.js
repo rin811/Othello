@@ -1,8 +1,17 @@
 window.addEventListener("resize", updateCanvas);
-window.addEventListener("onTouch", onClick);
-window.addEventListener("click", onClick);
+window.addEventListener("touchend", function(event){
+    x=event.changedTouches[0].pageX;
+    y=event.changedTouches[0].pageY;
 
-//window.addEventListener
+    onClick(x,y);
+});
+window.addEventListener("click", function(event){
+    var rect = event.target.getBoundingClientRect();
+    x=event.clientX - rect.left;
+    y=event.clientY - rect.top;
+
+    onClick(x,y);
+});
 
 var board;
 var boardAnim;
@@ -72,11 +81,9 @@ function init(){
     requestAnimationFrame(update);
 }
 
-function onClick(e){
+function onClick(x,y){
     //マス目を取得
-    var rect = e.target.getBoundingClientRect();
-    x=e.clientX - rect.left;
-    y=e.clientY - rect.top;
+    
 
     if(marginSize<x && marginSize<y && x<marginSize+boardSize && y<marginSize+boardSize){
         putDisks(Math.floor((x-marginSize)/(boardSize/8)),Math.floor((y-marginSize)/(boardSize/8)));
