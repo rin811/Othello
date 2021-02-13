@@ -1,17 +1,18 @@
 window.addEventListener("resize", updateCanvas);
+if(window.ontouchend===null){
 window.addEventListener("touchend", function(event){
     x=event.changedTouches[0].pageX;
     y=event.changedTouches[0].pageY;
 
     onClick(x,y);
-});
+});}else{
 window.addEventListener("click", function(event){
     var rect = event.target.getBoundingClientRect();
     x=event.clientX - rect.left;
     y=event.clientY - rect.top;
 
     onClick(x,y);
-});
+});}
 
 var board;
 var boardAnim;
@@ -25,6 +26,7 @@ var lineStroke=2;
 
 var animDuration=100;
 var animSpeed=5;
+var animDiff=30;
 
 window.onload=function(){
     setCanvasSize();
@@ -72,9 +74,9 @@ function init(){
 
     //初期状態の４つの石を設置
     turnDisks(3,3,1,0);
-    turnDisks(4,4,1,-50);
-    turnDisks(3,4,0,-30);
-    turnDisks(4,3,0,-30);
+    turnDisks(4,4,1,-2*animDiff);
+    turnDisks(3,4,0,-animDiff);
+    turnDisks(4,3,0,-animDiff);
     
     turn=0;
 
@@ -103,10 +105,10 @@ function putDisks(X,Y){
 
         //左方向
         if(board[Y][X-1]==turn_invert){
-            for(var i=1; i<X;i++){
+            for(var i=1; i<X+1;i++){
                 if(board[Y][X-i]==3)break;
                 if(board[Y][X-i]==turn){
-                    for(var j=1;j<i;j++){turnDisks(X-j,Y,turn);}break;
+                    for(var j=1;j<i;j++){turnDisks(X-j,Y,turn,-j*animDiff);}break;
                 }
             }
         }
@@ -115,17 +117,17 @@ function putDisks(X,Y){
             for(var i=1; i<8-X;i++){
                 if(board[Y][X+i]==3)break;
                 if(board[Y][X+i]==turn){
-                    for(var j=1;j<i;j++){turnDisks(X+j,Y,turn);}break;
+                    for(var j=1;j<i;j++){turnDisks(X+j,Y,turn,-j*animDiff);}break;
                 }
             }
         }
         // 上方向
         if(Y!=0){
             if(board[Y-1][X]==turn_invert){
-                for(var i=1; i<Y;i++){
+                for(var i=1; i<Y+1;i++){
                     if(board[Y-i][X]==3)break;
                     if(board[Y-i][X]==turn){
-                        for(var j=1;j<i;j++){turnDisks(X,Y-j,turn);}break;
+                        for(var j=1;j<i;j++){turnDisks(X,Y-j,turn,-j*animDiff);}break;
                     }
                 }
             }
@@ -136,7 +138,7 @@ function putDisks(X,Y){
                 for(var i=1; i<8-Y;i++){
                     if(board[Y+i][X]==3)break;
                     if(board[Y+i][X]==turn){
-                        for(var j=1;j<i;j++){turnDisks(X,Y+j,turn);}break;
+                        for(var j=1;j<i;j++){turnDisks(X,Y+j,turn,-j*animDiff);}break;
                     }
                 }
             }
@@ -259,14 +261,6 @@ function draw(){
             ctx.fillRect(marginSize*2+boardSize,marginSize,canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize);
             ctx.fillRect(marginSize*2+boardSize,marginSize+(canvas.clientHeight*0.5),canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize*2);
         }
-
-        
-
-        
-        
-
-    // }
-    
 }
 
 function EaseOutExpo(t)
