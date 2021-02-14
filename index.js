@@ -94,20 +94,18 @@ function onClick(x,y){
 
 function putDisks(X,Y){
     if(board[Y][X]==3){
-
-        
-        board[Y][X]=turn;
-        turnDisks(X,Y,turn);
-
         var turn_invert;
         if(turn==0)turn_invert=1;
         else turn_invert=0;
+
+        turnDisks(X,Y,turn);
 
         //左方向
         if(board[Y][X-1]==turn_invert){
             for(var i=1; i<X+1;i++){
                 if(board[Y][X-i]==3)break;
                 if(board[Y][X-i]==turn){
+                    // turnDisks(X,Y,turn);
                     for(var j=1;j<i;j++){turnDisks(X-j,Y,turn,-j*animDiff);}break;
                 }
             }
@@ -117,6 +115,7 @@ function putDisks(X,Y){
             for(var i=1; i<8-X;i++){
                 if(board[Y][X+i]==3)break;
                 if(board[Y][X+i]==turn){
+                    // turnDisks(X,Y,turn);
                     for(var j=1;j<i;j++){turnDisks(X+j,Y,turn,-j*animDiff);}break;
                 }
             }
@@ -127,6 +126,7 @@ function putDisks(X,Y){
                 for(var i=1; i<Y+1;i++){
                     if(board[Y-i][X]==3)break;
                     if(board[Y-i][X]==turn){
+                        // turnDisks(X,Y,turn);
                         for(var j=1;j<i;j++){turnDisks(X,Y-j,turn,-j*animDiff);}break;
                     }
                 }
@@ -138,8 +138,53 @@ function putDisks(X,Y){
                 for(var i=1; i<8-Y;i++){
                     if(board[Y+i][X]==3)break;
                     if(board[Y+i][X]==turn){
+                        // turnDisks(X,Y,turn);
                         for(var j=1;j<i;j++){turnDisks(X,Y+j,turn,-j*animDiff);}break;
                     }
+                }
+            }
+        }
+
+        //右上
+        if(X!=7 && Y!=0){
+            for(var i=1;X+i<7 && Y-i>0;i++){
+                if(board[Y-i][X+i]==3)break;
+                if(board[Y-i][X+i]==turn){
+                    // turnDisks(X,Y,turn);
+                    for(var j=1;j<i;j++){turnDisks(X+j,Y-j,turn,-j*animDiff);}break;
+                }
+            }
+        }
+
+        //右下
+        if(X!=7 && Y!=7){
+            for(var i=1;X+i<7 && Y+i<7;i++){
+                if(board[Y+i][X+i]==3)break;
+                if(board[Y+i][X+i]==turn){
+                    // turnDisks(X,Y,turn);
+                    for(var j=1;j<i;j++){turnDisks(X+j,Y+j,turn,-j*animDiff);}break;
+                }
+            }
+        }
+
+        //左上
+        if(X!=0 && Y!=0){
+            for(var i=1;X-i>0 && Y-i>0;i++){
+                if(board[Y-i][X-i]==3)break;
+                if(board[Y-i][X-i]==turn){
+                    // turnDisks(X,Y,turn);
+                    for(var j=1;j<i;j++){turnDisks(X-j,Y-j,turn,-j*animDiff);}break;
+                }
+            }
+        }
+
+        //左下
+        if(X!=0 && Y!=7){
+            for(var i=1;X-i>0 && Y+i<7;i++){
+                if(board[Y+i][X-i]==3)break;
+                if(board[Y+i][X-i]==turn){
+                    // turnDisks(X,Y,turn);
+                    for(var j=1;j<i;j++){turnDisks(X-j,X+j,turn,-j*animDiff);}break;
                 }
             }
         }
@@ -193,7 +238,7 @@ function draw(){
         //盤面の描画
         ctx.fillStyle="black";
         ctx.fillRect(marginSize,marginSize,boardSize,boardSize);
-        ctx.fillStyle="#16c79a";
+        ctx.fillStyle="#16c79a";//盤面の背景
         ctx.fillRect(marginSize+boardStroke,marginSize+boardStroke,boardSize-boardStroke*2,boardSize-boardStroke*2);
 
         //枠の描画
