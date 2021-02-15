@@ -305,14 +305,25 @@ function draw(){
         }
 
         //スコア表描画
+        ctx.fillStyle="white";
         if(canvas.clientHeight>=canvas.clientWidth)
         {
             //画面アスペクト比縦長用
+
+            //領域の計算
+            var boxSize=(canvas.clientHeight-2*marginSize-boardSize)/3;
+
+            ctx.fillRect(canvas.clientWidth-boxSize-marginSize, 2*marginSize+boardSize, boxSize, boxSize-marginSize);
+            ctx.fillRect(canvas.clientWidth-2*(boxSize+marginSize), 2*marginSize+boardSize, boxSize, boxSize-marginSize);
+            ctx.fillRect(canvas.clientWidth-3*(boxSize+marginSize), 2*marginSize+boardSize, boxSize, boxSize-marginSize);
+
+            ctx.fillRect(marginSize, 2*marginSize+boardSize+boxSize, boardSize, boxSize-marginSize);
+            ctx.fillRect(marginSize, 2*marginSize+boardSize+2*boxSize, boardSize, boxSize-marginSize);
         }
         else
         {
             //画面アスペクト比横長用
-            ctx.fillStyle="#433d3c";
+            ctx.fillStyle="white";
             ctx.fillRect(marginSize*2+boardSize,marginSize,canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize);
             ctx.fillRect(marginSize*2+boardSize,marginSize+(canvas.clientHeight*0.5),canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize*2);
         }
