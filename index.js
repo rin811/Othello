@@ -14,6 +14,8 @@ window.addEventListener("click", function(event){
     onClick(x,y);
 });}
 
+var darkMode=true
+
 var board;
 var boardAnim;
 var boardBuffer;
@@ -26,7 +28,7 @@ var lineStroke=2;
 
 var animDuration=100;
 var animSpeed=5;
-var animDiff=30;
+var animDiff=20;
 
 window.onload=function(){
     setCanvasSize();
@@ -237,6 +239,12 @@ function draw(){
 
         //盤面の描画
         ctx.fillStyle="black";
+
+        ctx.shadowColor="#868686";//影の設定
+        ctx.shadowBlur=10;
+        ctx.shadowOffsetX=0;
+        ctx.shadowOffsetY=0;
+
         ctx.fillRect(marginSize,marginSize,boardSize,boardSize);
         ctx.fillStyle="#16c79a";//盤面の背景
         ctx.fillRect(marginSize+boardStroke,marginSize+boardStroke,boardSize-boardStroke*2,boardSize-boardStroke*2);
@@ -244,6 +252,7 @@ function draw(){
         //枠の描画
         //縦線
         ctx.fillStyle="black";
+        ctx.shadowBlur=0;
         for(var i=0;i<7;i++){
             ctx.fillRect(marginSize+boardSize/8*(i+1),marginSize,lineStroke,boardSize);
         }
@@ -252,6 +261,7 @@ function draw(){
         }
 
         //石の描画
+        ctx.shadowBlur=5;
         for(var i=0;i<8;i++){
             for(var j=0;j<8;j++){
                 if(boardBuffer[i][j]!=3){
