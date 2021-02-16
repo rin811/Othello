@@ -37,9 +37,14 @@ window.onload=function(){
 }
 
 function setCanvasSize(){
+    var wrapperObj = document.getElementById("wrapper");
     var canvasObj = document.getElementById("canvas");
-    canvasObj.setAttribute("width", document.documentElement.clientWidth - 33);
-    canvasObj.setAttribute("height", document.documentElement.clientHeight - 33);
+    canvasObj.width=wrapperObj.offsetWidth;
+    canvasObj.height=wrapperObj.offsetHeight;
+
+
+    // canvasObj.setAttribute("width", document.documentElement.clientWidth - 33);
+    // canvasObj.setAttribute("height", document.documentElement.clientHeight - 33);
 }
 
 function updateCanvas(){
