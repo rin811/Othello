@@ -42,10 +42,6 @@ function setCanvasSize(){
     canvasObj.width=wrapperObj.offsetWidth;
     canvasObj.height=wrapperObj.offsetHeight;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 1484e264f7558c0c555775b3c5944fbf87f30d28
     // canvasObj.setAttribute("width", document.documentElement.clientWidth - 33);
     // canvasObj.setAttribute("height", document.documentElement.clientHeight - 33);
 }
