@@ -23,7 +23,7 @@ var boardBuffer;
 var turn=0;//順番（黒が0,白が1）
 var boardSize;//盤面の直径
 var marginSize=16;
-var boardStroke=4;
+var boardStroke=5;
 var lineStroke=2;
 
 var animDuration=100;
@@ -37,9 +37,13 @@ window.onload=function(){
 }
 
 function setCanvasSize(){
+    var wrapperObj = document.getElementById("wrapper");
     var canvasObj = document.getElementById("canvas");
-    canvasObj.setAttribute("width", document.documentElement.clientWidth - 33);
-    canvasObj.setAttribute("height", document.documentElement.clientHeight - 33);
+    canvasObj.width=wrapperObj.offsetWidth;
+    canvasObj.height=wrapperObj.offsetHeight;
+
+    // canvasObj.setAttribute("width", document.documentElement.clientWidth - 33);
+    // canvasObj.setAttribute("height", document.documentElement.clientHeight - 33);
 }
 
 function updateCanvas(){
@@ -48,22 +52,10 @@ function updateCanvas(){
 }
 
 function init(){
-    // board=[
-    //     [3,3,3,3,3,3,3,3],
-    //     [3,3,3,3,3,3,3,3],
-    //     [3,3,3,3,3,3,3,3],
-    //     [3,3,3,1,0,3,3,3],
-    //     [3,3,3,0,1,3,3,3],
-    //     [3,3,3,3,3,3,3,3],
-    //     [3,3,3,3,3,3,3,3],
-    //     [3,3,3,3,3,3,3,3]
-    // ];
-
     //盤面の配列を初期化 黒=0 白=1
     board = new Array(8);
     for(var y=0;y<8;y++){board[y]=(new Array(8)).fill(3);}
 
-    
 
     //盤面の状態を保持しておくバッファ(アニメーション用)
     boardBuffer = new Array(8);
@@ -234,25 +226,32 @@ function draw(){
         if(boardSize>canvas.clientHeight) boardSize=canvas.clientHeight;
         boardSize-=marginSize*2;
 
-        ctx.fillStyle="#f5f4f4";
+        //色の定義
+        var mainColor="#121212"
+
+        ctx.fillStyle=mainColor;
         ctx.fillRect(0,0,canvas.clientWidth,canvas.clientHeight);//背景の描画
+
 
         //盤面の描画
         ctx.fillStyle="black";
 
-        ctx.shadowColor="#868686";//影の設定
+        ctx.shadowColor="black";//影の設定
         ctx.shadowBlur=10;
         ctx.shadowOffsetX=0;
         ctx.shadowOffsetY=0;
 
+        //スコアボードの表示
+        // ctx.fillRect(0,0,canvas.clientWidth)
+        ctx.fillStyle="#1F1B24";
         ctx.fillRect(marginSize,marginSize,boardSize,boardSize);
+        ctx.shadowBlur=0;
         ctx.fillStyle="#16c79a";//盤面の背景
         ctx.fillRect(marginSize+boardStroke,marginSize+boardStroke,boardSize-boardStroke*2,boardSize-boardStroke*2);
 
         //枠の描画
         //縦線
-        ctx.fillStyle="black";
-        ctx.shadowBlur=0;
+        ctx.fillStyle="#1F1B24";
         for(var i=0;i<7;i++){
             ctx.fillRect(marginSize+boardSize/8*(i+1),marginSize,lineStroke,boardSize);
         }
@@ -261,7 +260,7 @@ function draw(){
         }
 
         //石の描画
-        ctx.shadowBlur=5;
+        ctx.shadowBlur=3;
         for(var i=0;i<8;i++){
             for(var j=0;j<8;j++){
                 if(boardBuffer[i][j]!=3){
@@ -270,15 +269,15 @@ function draw(){
                     {
                         //枠の描画
                         if(boardBuffer[i][j]==0) ctx.fillStyle="white";
-                        else ctx.fillStyle="black";
+                        else ctx.fillStyle="#1F1B24";
 
                         ctx.beginPath();
                         ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.2,0,2*Math.PI,true);
                         ctx.fill();
 
                         //中身
-                        if(boardBuffer[i][j]==0) ctx.fillStyle="black";
-                        else ctx.fillStyle="white"
+                        if(boardBuffer[i][j]==0) ctx.fillStyle="#1F1B24";
+                        else ctx.fillStyle="white";
 
                         ctx.beginPath();
                         ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.22,0,2*Math.PI,true);
@@ -289,13 +288,13 @@ function draw(){
                 if(board[i][j]!=3){
                     //石の描画
                     if(board[i][j]==0) ctx.fillStyle="white";
-                    else ctx.fillStyle="black";
+                    else ctx.fillStyle="1F1B24";
 
                     ctx.beginPath();
                     ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.2*Math.max(EaseOutExpo(boardAnim[i][j]),0),0,2*Math.PI,true);
                     ctx.fill();
     
-                    if(board[i][j]==0) ctx.fillStyle="black";
+                    if(board[i][j]==0) ctx.fillStyle="#1F1B24";
                     else ctx.fillStyle="white";
                     ctx.beginPath();
                     ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.22*Math.max(EaseOutExpo(boardAnim[i][j]),0),0,2*Math.PI,true);
@@ -305,14 +304,25 @@ function draw(){
         }
 
         //スコア表描画
+        //ctx.fillStyle="white";
+        ctx.fillStyle="#1F1B24";
         if(canvas.clientHeight>=canvas.clientWidth)
         {
-            //画面アスペクト比縦長用
+            // 画面アスペクト比縦長用
+
+            // 領域の計算
+            var boxSize=(canvas.clientHeight-2*marginSize-boardSize)/3;
+
+            ctx.fillRect(canvas.clientWidth-boxSize-marginSize, 2*marginSize+boardSize, boxSize, boxSize-marginSize);
+            ctx.fillRect(canvas.clientWidth-2*(boxSize+marginSize), 2*marginSize+boardSize, boxSize, boxSize-marginSize);
+            ctx.fillRect(canvas.clientWidth-3*(boxSize+marginSize), 2*marginSize+boardSize, boxSize, boxSize-marginSize);
+
+            ctx.fillRect(marginSize, 2*marginSize+boardSize+boxSize, boardSize, boxSize-marginSize);
+            ctx.fillRect(marginSize, 2*marginSize+boardSize+2*boxSize, boardSize, boxSize-marginSize);
         }
         else
         {
             //画面アスペクト比横長用
-            ctx.fillStyle="#433d3c";
             ctx.fillRect(marginSize*2+boardSize,marginSize,canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize);
             ctx.fillRect(marginSize*2+boardSize,marginSize+(canvas.clientHeight*0.5),canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize*2);
         }
