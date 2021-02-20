@@ -327,10 +327,6 @@ function draw(){
         else
         {
             //画面アスペクト比横長用
-<<<<<<< HEAD
-=======
-            ctx.fillStyle="white";
->>>>>>> 1484e264f7558c0c555775b3c5944fbf87f30d28
             ctx.fillRect(marginSize*2+boardSize,marginSize,canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize);
             ctx.fillRect(marginSize*2+boardSize,marginSize+(canvas.clientHeight*0.5),canvas.clientWidth-(marginSize*3+boardSize),canvas.clientHeight*0.5-marginSize*2);
         }
