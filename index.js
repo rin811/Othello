@@ -260,13 +260,14 @@ function draw(){
         }
 
         //石の描画
-        ctx.shadowBlur=3;
+        
         for(var i=0;i<8;i++){
             for(var j=0;j<8;j++){
                 if(boardBuffer[i][j]!=3){
                     //アニメーション用の石描画
                     if(boardAnim[i][j]<animDuration)
                     {
+                        ctx.shadowBlur=3;
                         //枠の描画
                         if(boardBuffer[i][j]==0) ctx.fillStyle="white";
                         else ctx.fillStyle="#1F1B24";
@@ -276,6 +277,7 @@ function draw(){
                         ctx.fill();
 
                         //中身
+                        ctx.shadowBlur=0;
                         if(boardBuffer[i][j]==0) ctx.fillStyle="#1F1B24";
                         else ctx.fillStyle="white";
 
@@ -286,14 +288,18 @@ function draw(){
                 }
 
                 if(board[i][j]!=3){
+                    
                     //石の描画
+                    ctx.shadowBlur=3;
                     if(board[i][j]==0) ctx.fillStyle="white";
-                    else ctx.fillStyle="1F1B24";
+                    else ctx.fillStyle="#1F1B24";
+                    
 
                     ctx.beginPath();
                     ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.2*Math.max(EaseOutExpo(boardAnim[i][j]),0),0,2*Math.PI,true);
                     ctx.fill();
     
+                    ctx.shadowBlur=0;
                     if(board[i][j]==0) ctx.fillStyle="#1F1B24";
                     else ctx.fillStyle="white";
                     ctx.beginPath();
@@ -305,6 +311,7 @@ function draw(){
 
         //スコア表描画
         //ctx.fillStyle="white";
+        ctx.shadowBlur=3;
         ctx.fillStyle="#1F1B24";
         if(canvas.clientHeight>=canvas.clientWidth)
         {
