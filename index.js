@@ -23,7 +23,7 @@ var boardBuffer;
 var turn=0;//順番（黒が0,白が1）
 var boardSize;//盤面の直径
 var marginSize=16;
-var boardStroke=5;
+var boardStroke=10;
 var lineStroke=2;
 
 var animDuration=100;
@@ -268,21 +268,21 @@ function draw(){
                     if(boardAnim[i][j]<animDuration)
                     {
                         ctx.shadowBlur=3;
-                        //枠の描画
+                        // 枠の描画
                         if(boardBuffer[i][j]==0) ctx.fillStyle="white";
                         else ctx.fillStyle="#1F1B24";
 
                         ctx.beginPath();
-                        ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.2,0,2*Math.PI,true);
+                        ctx.arc(marginSize+boardStroke/2+boardSize/8/2+j*(boardSize-boardStroke)/8,marginSize+boardStroke/2+boardSize/8/2+i*(boardSize-boardStroke)/8,boardSize/8/2/1.2,0,2*Math.PI,true);
                         ctx.fill();
 
-                        //中身
+                        // 中身
                         ctx.shadowBlur=0;
                         if(boardBuffer[i][j]==0) ctx.fillStyle="#1F1B24";
                         else ctx.fillStyle="white";
 
                         ctx.beginPath();
-                        ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.22,0,2*Math.PI,true);
+                        ctx.arc(marginSize+boardStroke/2+boardSize/8/2+j*(boardSize-boardStroke)/8,marginSize+boardStroke/2+boardSize/8/2+i*(boardSize-boardStroke)/8,boardSize/8/2/1.22,0,2*Math.PI,true);
                         ctx.fill();
                     }
                 }
@@ -296,14 +296,14 @@ function draw(){
                     
 
                     ctx.beginPath();
-                    ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.2*Math.max(EaseOutExpo(boardAnim[i][j]),0),0,2*Math.PI,true);
+                    ctx.arc(marginSize+boardStroke/2+boardSize/8/2+j*(boardSize-boardStroke)/8,marginSize+boardStroke/2+boardSize/8/2+i*(boardSize-boardStroke)/8,boardSize/8/2/1.2*Math.max(EaseOutExpo(boardAnim[i][j]),0),0,2*Math.PI,true);
                     ctx.fill();
     
                     ctx.shadowBlur=0;
                     if(board[i][j]==0) ctx.fillStyle="#1F1B24";
                     else ctx.fillStyle="white";
                     ctx.beginPath();
-                    ctx.arc(marginSize+boardSize/8*j+boardSize/8/2,marginSize+boardSize/8*i+boardSize/8/2,boardSize/8/2/1.22*Math.max(EaseOutExpo(boardAnim[i][j]),0),0,2*Math.PI,true);
+                    ctx.arc(marginSize+boardStroke/2+boardSize/8/2+j*(boardSize-boardStroke)/8,marginSize+boardStroke/2+boardSize/8/2+i*(boardSize-boardStroke)/8,boardSize/8/2/1.22*Math.max(EaseOutExpo(boardAnim[i][j]),0),0,2*Math.PI,true);
                     ctx.fill();
                 }
             }
